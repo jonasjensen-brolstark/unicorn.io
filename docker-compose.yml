@@ -1,18 +1,18 @@
 version: '3.7'
 services:
-  image-service:
+  image:
     container_name: image-service
     build:
       context: ./src/services/image/
     networks: 
       - services
-  profile-service:
+  profile:
     container_name: profile-service
     build:
       context: ./src/services/profile/
     networks: 
       - services
-  pricing-service:
+  pricing:
     container_name: pricing-service
     build:
       context: ./src/services/pricing/
