@@ -40,11 +40,15 @@ services:
       - backend
       - services
 
+  site:
+    build:
+      context: ./src/web/site/
+    ports:
+      - "5001:80"
 
 volumes:
   mssql-server-linux-data: 
 
 networks: 
-  frontend:
   backend:
   services:
