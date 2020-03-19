@@ -1,26 +1,22 @@
 version: '3.7'
 services:
   image:
-    container_name: image-service
     build:
       context: ./src/services/image/
     networks: 
       - services
   profile:
-    container_name: profile-service
     build:
       context: ./src/services/profile/
     networks: 
       - services
   pricing:
-    container_name: pricing-service
     depends_on: 
       - pricing_db
     build:
       context: ./src/services/pricing/
     networks: 
       - services
-
   pricing_db:
     image: microsoft/mssql-server-linux
     environment:
@@ -34,6 +30,16 @@ services:
       test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Your_password123" -Q "SELECT 1" || exit 1
     networks: 
       - services
+
+  web_api:
+    build:
+      context: ./src/web/api/
+    ports: 
+      - "5000:80"
+    networks: 
+      - backend
+      - services
+
 
 volumes:
   mssql-server-linux-data: 

@@ -12,11 +12,6 @@ namespace pricing.Controllers
     [Route("[controller]")]
     public class PriceController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<PriceController> _logger;
         private readonly PricingContext _pricingContext;
 
