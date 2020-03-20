@@ -13,6 +13,7 @@ services:
   pricing:
     depends_on: 
       - pricing_db
+    restart: always
     build:
       context: ./src/services/pricing/
     networks: 
@@ -88,8 +89,8 @@ services:
     depends_on:
       - elasticsearch
     environment:
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - ELASTICSEARCH_HOSTS= http://elasticsearch:9200
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     ports:
       - 5601:5601
     networks:
