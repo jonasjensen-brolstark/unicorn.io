@@ -45,7 +45,7 @@ services:
 
   site:
     build:
-      context: ./src/web/site2/
+      context: ./src/web/site/
     ports:
       - "5001:80"
 
