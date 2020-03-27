@@ -18,6 +18,7 @@ services:
       context: ./src/services/pricing/
     networks: 
       - services
+      - elastic
   pricing_db:
     image: microsoft/mssql-server-linux
     environment:
@@ -40,14 +41,15 @@ services:
     networks: 
       - backend
       - services
+      - elastic
 
   site:
     build:
-      context: ./src/web/site/
+      context: ./src/web/site2/
     ports:
       - "5001:80"
 
-  apm-server:
+  apm:
     image: docker.elastic.co/apm/apm-server:7.6.1
     depends_on:
       - elasticsearch
