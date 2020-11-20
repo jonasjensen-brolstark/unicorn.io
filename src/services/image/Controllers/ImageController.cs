@@ -27,8 +27,7 @@ namespace image.Controllers
       
       if (!System.IO.File.Exists(image))
       {
-         image = GetPhysicalPathFromRelativeUrl($"/Images/default.jpg");
-        // return NotFound();
+        return NotFound();
       };
 
       return PhysicalFile(image, "image/jpeg");
