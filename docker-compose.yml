@@ -1,44 +1,62 @@
-version: '3.7'
+version: "3.7"
 services:
   image:
     build:
       context: ./src/services/image/
-    networks: 
+    depends_on:
+      apm:
+        condition: service_healthy
+    networks:
       - services
+
   profile:
     build:
       context: ./src/services/profile/
-    networks: 
+    depends_on:
+      apm:
+        condition: service_healthy
+    networks:
       - services
+      - elastic
+
   pricing:
-    depends_on: 
-      - pricing_db
+    hostname: pricing
+    depends_on:
+      pricing_db:
+        condition: service_healthy
+      apm:
+        condition: service_healthy
     restart: always
     build:
       context: ./src/services/pricing/
-    networks: 
+    networks:
       - services
       - elastic
+
   pricing_db:
-    image: microsoft/mssql-server-linux
+    image: mcr.microsoft.com/mssql/server
+    hostname: pricing_db
     environment:
       SA_PASSWORD: "Your_password123"
       ACCEPT_EULA: "Y"
-    volumes:
-      - mssql-server-linux-data:/var/opt/mssql/data
     ports:
       - "1433:1433"
     healthcheck:
+      interval: 10s
+      retries: 12
       test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Your_password123" -Q "SELECT 1" || exit 1
-    networks: 
+    networks:
       - services
 
   web_api:
     build:
       context: ./src/web/api/
-    ports: 
+    depends_on:
+      apm:
+        condition: service_healthy
+    ports:
       - "5000:80"
-    networks: 
+    networks:
       - backend
       - services
       - elastic
@@ -46,14 +64,20 @@ services:
   site:
     build:
       context: ./src/web/site/
+    depends_on:
+      apm:
+        condition: service_healthy
     ports:
       - "5001:80"
 
   apm:
-    image: docker.elastic.co/apm/apm-server:7.6.1
+    image: docker.elastic.co/apm/apm-server:7.15.2
+    hostname: apm
     depends_on:
-      - elasticsearch
-      - kibana
+      elasticsearch:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
     cap_add: ["CHOWN", "DAC_OVERRIDE", "SETGID", "SETUID"]
     cap_drop: ["ALL"]
     ports:
@@ -61,16 +85,21 @@ services:
     networks:
       - elastic
     command: >
-        apm-server -e
-          -E apm-server.rum.enabled=true
-          -E setup.kibana.host=kibana:5601
-          -E setup.template.settings.index.number_of_replicas=0
-          -E apm-server.kibana.enabled=true
-          -E apm-server.kibana.host=kibana:5601
-          -E output.elasticsearch.hosts=["elasticsearch:9200"]
+      apm-server -e
+        -E apm-server.rum.enabled=true
+        -E setup.kibana.host=kibana:5601
+        -E setup.template.settings.index.number_of_replicas=0
+        -E apm-server.kibana.enabled=true
+        -E apm-server.kibana.host=kibana:5601
+        -E output.elasticsearch.hosts=["elasticsearch:9200"]
+    healthcheck:
+      interval: 10s
+      retries: 12
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:8200/
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+    hostname: elasticsearch
     environment:
       - bootstrap.memory_lock=true
       - cluster.name=docker-cluster
@@ -81,15 +110,23 @@ services:
       memlock:
         hard: -1
         soft: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
       - elastic
+    healthcheck:
+      interval: 20s
+      retries: 10
+      test: curl -s http://localhost:9200/_cluster/health | grep -vq '"status":"red"'
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.6.1
+    image: docker.elastic.co/kibana/kibana:7.15.2
+    hostname: kibana
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     environment:
       ELASTICSEARCH_URL: http://elasticsearch:9200
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
@@ -97,11 +134,16 @@ services:
       - 5601:5601
     networks:
       - elastic
-    
-volumes:
-  mssql-server-linux-data: 
+    healthcheck:
+      interval: 10s
+      retries: 20
+      test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
 
-networks: 
+volumes:
+  esdata:
+    driver: local
+
+networks:
   backend:
   services:
   elastic:

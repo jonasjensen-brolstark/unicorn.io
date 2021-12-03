@@ -32,6 +32,7 @@ namespace pricing
     {
       app.UseAllElasticApm(Configuration);
       UpdateDatabase(app);
+
       if (env.IsDevelopment())
       {
         app.UseDeveloperExceptionPage();

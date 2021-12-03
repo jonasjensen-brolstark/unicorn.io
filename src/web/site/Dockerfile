@@ -1,6 +1,5 @@
 FROM nginx
 
-RUN apt-get update
 RUN apt-get install -qq curl
 
 ENV NPM_CONFIG_LOGLEVEL info
