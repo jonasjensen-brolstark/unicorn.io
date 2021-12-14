@@ -8,6 +8,7 @@ services:
         condition: service_healthy
     networks:
       - services
+      - elastic
 
   profile:
     build:
@@ -110,8 +111,6 @@ services:
       memlock:
         hard: -1
         soft: -1
-    volumes:
-      - esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
@@ -138,10 +137,6 @@ services:
       interval: 10s
       retries: 20
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
-
-volumes:
-  esdata:
-    driver: local
 
 networks:
   backend:

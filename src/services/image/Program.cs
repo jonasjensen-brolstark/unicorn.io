@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Elastic.Apm.SerilogEnricher;
+using Elastic.CommonSchema.Serilog;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 
 namespace image
 {
@@ -18,6 +17,17 @@ namespace image
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseSerilog((context, services, configuration) => configuration
+                        .ReadFrom.Configuration(context.Configuration)
+                        .ReadFrom.Services(services)
+                        .Enrich.FromLogContext()
+                        .Enrich.WithProperty("Application", "image")
+                        .Enrich.WithElasticApmCorrelationInfo()
+                        .WriteTo.Console()
+                        .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://elasticsearch:9200"))
+                        {
+                            CustomFormatter = new EcsTextFormatter()
+                        }))
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
