@@ -914,22 +914,21 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
-"@elastic/apm-rum-core@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@elastic/apm-rum-core/-/apm-rum-core-5.0.0.tgz#7e53cb6b9347d197e9c3b7b424b157ee521233d8"
-  integrity sha512-BQ4kiGQTdAL+F0ssPUWn9jgXuJDKMyqFyA7R8f+2cvX6Kd6yUZqs/MpMtEGvTNov1jRle0IGhfjg/uXN9zPQ6Q==
+"@elastic/apm-rum-core@^5.13.0":
+  version "5.13.0"
+  resolved "https://registry.yarnpkg.com/@elastic/apm-rum-core/-/apm-rum-core-5.13.0.tgz#dbada016fc73c0be4d7df1ba835a1556dc48d21e"
+  integrity sha512-5kSTbdmyLfpCdLgoy387y+WMCVl4YuYHdkFgDWAGfOBR+aaOCQAcQoLc8KK6+FZoN/vqvVSFCN+GxxyBc9Kmdw==
   dependencies:
     error-stack-parser "^1.3.5"
     opentracing "^0.14.3"
     promise-polyfill "^8.1.3"
-    uuid "^3.1.0"
 
-"@elastic/apm-rum@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@elastic/apm-rum/-/apm-rum-5.0.0.tgz#c3f325d81c5ddb641b92c59efa7a442ce653dbb0"
-  integrity sha512-O2jay9qS5nzeYrGN4vdC1aH939CVgxxAY6wza4M35xTqqQ9xsEiVeyagaiDHbeT/vlzJDGPxFCIUg87qV4a7oA==
+"@elastic/apm-rum@^5.9.1":
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/@elastic/apm-rum/-/apm-rum-5.10.0.tgz#ffadc50e53d7b7bc9f1c7851f7d70631c3e14eba"
+  integrity sha512-Aw3UwiduxNfJ0/S3Uq0cO8O+60RmEMa9AJGq6v8fFQ8UdnTV1IgT73NpPyMLtn3qBcKyJNKpvx0jW28w5IVLcQ==
   dependencies:
-    "@elastic/apm-rum-core" "^5.0.0"
+    "@elastic/apm-rum-core" "^5.13.0"
 
 "@hapi/address@2.x.x":
   version "2.1.4"
@@ -2804,9 +2803,9 @@ color-name@^1.0.0, color-name@~1.1.4:
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
 color-string@^1.5.2:
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/color-string/-/color-string-1.5.3.tgz#c9bbc5f01b58b5492f3d6857459cb6590ce204cc"
-  integrity sha512-dC2C5qeWoYkxki5UAXapdjqO672AM4vZuPGRQfO8b5HKuKGBbKWpITyDYN7TOFKvRW7kOgAn3746clDBMDJyQw==
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/color-string/-/color-string-1.9.0.tgz#63b6ebd1bec11999d1df3a79a7569451ac2be8aa"
+  integrity sha512-9Mrz2AQLefkH1UvASKj6v6hj/7eWgjnT/cVsR8CumieLoT+g900exWeNogqtweI8dxloXN9BDQTYro1oWu/5CQ==
   dependencies:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
@@ -10069,7 +10068,7 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@^3.0.1, uuid@^3.1.0, uuid@^3.3.2:
+uuid@^3.0.1, uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
