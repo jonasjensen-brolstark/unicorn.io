@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router'
 import { BrowserModule } from '@angular/platform-browser';
+import { ApmErrorHandler, ApmModule, ApmService } from '@elastic/apm-rum-angular';
 
 import { AppComponent } from './app.component';
 
@@ -12,11 +13,26 @@ const routes: Routes = []
     AppComponent
   ],
   imports: [
+    ApmModule,
     BrowserModule,
     RouterModule.forRoot(routes),
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    ApmService,
+    {
+      provide: ErrorHandler,
+      useClass: ApmErrorHandler
+    }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(service: ApmService) {
+    service.init({
+      serviceName: 'site',
+      serverUrl: 'http://localhost:8200',
+      environment: 'production',
+    });
+  }
+}
