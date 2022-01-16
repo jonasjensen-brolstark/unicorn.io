@@ -1,5 +1,32 @@
 version: "3.7"
 services:
+
+  bid:
+    build:
+      context: ./src/services/bid/
+    depends_on:
+      bid_db:
+        condition: service_healthy
+    environment:
+      - ELASTIC_APM_ENABLED=false
+      - BID_CONNECTION_STRING=Server=bid_db;Database=master;User=sa;Password=Your_password123;
+    networks:
+      - services
+      - bid
+
+  bid_db:
+    image: mcr.microsoft.com/mssql/server
+    hostname: bid_db
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    healthcheck:
+      interval: 10s
+      retries: 12
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Your_password123" -Q "SELECT 1" || exit 1
+    networks:
+      - bid
+
   image:
     build:
       context: ./src/services/image/
@@ -36,8 +63,6 @@ services:
     environment:
       SA_PASSWORD: "Your_password123"
       ACCEPT_EULA: "Y"
-    ports:
-      - "1433:1433"
     healthcheck:
       interval: 10s
       retries: 12
@@ -66,3 +91,4 @@ networks:
   backend:
   services:
   pricing:
+  bid:
