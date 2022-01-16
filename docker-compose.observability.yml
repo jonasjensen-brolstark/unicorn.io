@@ -2,6 +2,10 @@ version: "3.7"
 
 services:
 
+  bid:
+    environment:
+      - ELASTIC_APM_ENABLED=true
+
   image:
     environment:
       - ELASTIC_APM_ENABLED=true
