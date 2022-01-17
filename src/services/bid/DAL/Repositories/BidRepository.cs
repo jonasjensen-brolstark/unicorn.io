@@ -24,6 +24,7 @@ public class BidRepository : IBidRepository
         {
             var bid = new Bid
             {
+                Id = Guid.NewGuid(),
                 Amount = amount,
                 Timestamp = DateTimeOffset.Now
             };
