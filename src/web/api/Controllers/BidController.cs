@@ -6,11 +6,11 @@ using RestSharp;
 
 [ApiController]
 [Route("[controller]")]
-public class BidController : ControllerBase
+public class BidsController : ControllerBase
 {
-    private readonly ILogger<BidController> _logger;
+    private readonly ILogger<BidsController> _logger;
 
-    public BidController(ILogger<BidController> logger)
+    public BidsController(ILogger<BidsController> logger)
     {
         _logger = logger;
     }
@@ -18,8 +18,17 @@ public class BidController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<Bid>> Get()
     {
-        var bidClient = new RestClient("http://profile");
+        var bidClient = new RestClient("http://bid");
         var BidsRequest = new RestRequest("bid", DataFormat.Json);
         return await bidClient.GetAsync<List<Bid>>(BidsRequest);
+    }
+
+    [HttpPost]
+    public async Task<Bid> Post(double amount)
+    {
+        var bidClient = new RestClient("http://bid");
+        var BidsRequest = new RestRequest($"bid", DataFormat.Json);
+        BidsRequest.AddQueryParameter("amount", amount.ToString());
+        return await bidClient.PostAsync<Bid>(BidsRequest);
     }
 }
