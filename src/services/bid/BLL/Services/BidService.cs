@@ -10,10 +10,11 @@ public class BidService : IBidService
     public async Task<IEnumerable<BidDto>> GetBidsAsync()
     {
         var bids = await _bidRepository.GetBidsAsync();
-        return bids.Select(b => new BidDto
+        return bids.Select(bid => new BidDto
         {
-            Amount = b.Amount,
-            Timestamp = b.Timestamp
+            Id = bid.Id, 
+            Amount = bid.Amount,
+            Timestamp = bid.Timestamp
         });
     }
 
@@ -24,6 +25,7 @@ public class BidService : IBidService
             var bid = await _bidRepository.CreateBidAsync(amount);
             return new BidDto
             {
+                Id = bid.Id, 
                 Amount = bid.Amount,
                 Timestamp = bid.Timestamp
             };
