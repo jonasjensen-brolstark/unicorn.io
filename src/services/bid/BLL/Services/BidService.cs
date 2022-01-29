@@ -14,7 +14,8 @@ public class BidService : IBidService
         {
             Id = bid.Id, 
             Amount = bid.Amount,
-            Timestamp = bid.Timestamp
+            Timestamp = bid.Timestamp,
+            UnicornId = bid.UnicornId
         });
     }
 
