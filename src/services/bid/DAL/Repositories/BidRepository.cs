@@ -18,7 +18,7 @@ public class BidRepository : IBidRepository
         return await _context.Bids.ToListAsync();
     }
 
-    public async Task<Bid> CreateBidAsync(double amount)
+    public async Task<Bid> CreateBidAsync(double amount, Guid unicornId)
     {
         if (_context.Bids != null && amount > 0)
         {
@@ -26,7 +26,8 @@ public class BidRepository : IBidRepository
             {
                 Id = Guid.NewGuid(),
                 Amount = amount,
-                Timestamp = DateTimeOffset.Now
+                Timestamp = DateTimeOffset.Now,
+                UnicornId = unicornId
             };
             await _context.Bids.AddAsync(bid);
             await _context.SaveChangesAsync();

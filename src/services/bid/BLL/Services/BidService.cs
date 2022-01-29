@@ -19,16 +19,17 @@ public class BidService : IBidService
         });
     }
 
-    public async Task<BidDto> CreateBidAsync(double amount)
+    public async Task<BidDto> CreateBidAsync(double amount, Guid unicornId)
     {
         if (amount > 0)
         {
-            var bid = await _bidRepository.CreateBidAsync(amount);
+            var bid = await _bidRepository.CreateBidAsync(amount, unicornId);
             return new BidDto
             {
                 Id = bid.Id, 
                 Amount = bid.Amount,
-                Timestamp = bid.Timestamp
+                Timestamp = bid.Timestamp,
+                UnicornId = bid.UnicornId
             };
         }
 
