@@ -23,8 +23,8 @@ public class BidController : ControllerBase
     }
 
     [HttpPost(Name = "CreateBid")]
-    public async Task<BidDto> CreateBidAsync(double amount)
+    public async Task<BidDto> CreateBidAsync(double amount, Guid unicornId)
     {
-        return await _bidService.CreateBidAsync(amount);
+        return await _bidService.CreateBidAsync(amount, unicornId);
     }
 }

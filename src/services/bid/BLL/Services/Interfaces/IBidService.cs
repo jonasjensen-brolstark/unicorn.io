@@ -1,5 +1,5 @@
 public interface IBidService
 {
     public Task<IEnumerable<BidDto>> GetBidsAsync();
-    public Task<BidDto> CreateBidAsync(double amount);
+    public Task<BidDto> CreateBidAsync(double amount, Guid unicornId);
 }
