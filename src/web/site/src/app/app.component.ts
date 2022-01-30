@@ -1,5 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { timer, switchMap } from 'rxjs';
+import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { timer, switchMap, Observable, map } from 'rxjs';
 import { Unicorn } from './models/unicorn';
 import { BidService } from './services/bid.service';
 import { UnicornService } from './services/unicorn.service';
@@ -16,13 +16,9 @@ export class AppComponent {
 
   bids$ = timer(0, 2000).pipe(switchMap(() => this.bidService.getBids()));
 
-  @ViewChild('bidInput')
-  private input!: ElementRef<HTMLInputElement>;
-
   constructor(private unicornService: UnicornService, private bidService: BidService) { }
 
-  public bid(amount: string) {
-    this.bidService.createBid(parseFloat(amount)).subscribe();
-    this.input.nativeElement.value = '';
+  public onBid(amount: number, unicornId: string) {
+    this.bidService.createBid(amount, unicornId).subscribe();
   }
 }

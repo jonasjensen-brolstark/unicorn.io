@@ -1,0 +1,4 @@
+<div class="name">{{ unicorn.name }}</div>
+<div class="price">Price {{ unicorn.price | number }}</div>
+<div class="bid">Bid {{ unicorn.bid }}</div>
+<app-bid class="input" (bid)="onBid($event)"></app-bid>

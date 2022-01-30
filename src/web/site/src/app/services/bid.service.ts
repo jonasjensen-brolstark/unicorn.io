@@ -14,9 +14,10 @@ export class BidService {
     return this.httpClient.get<Bid[]>(`http://localhost:5000/bids`);
   }
 
-  createBid(amount: number): Observable<Bid> {
+  createBid(amount: number, unicornId: string): Observable<Bid> {
     let params = new HttpParams()
-      .append("amount", amount);
+      .append("amount", amount)
+      .append("unicornId", unicornId);
 
     return this.httpClient.post<Bid>(`http://localhost:5000/bids`, undefined, { params });
   }

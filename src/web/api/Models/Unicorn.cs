@@ -7,5 +7,6 @@ namespace api.Models {
     public int Age { get; set; }
     public double Weight { get; set; }
     public double Price { get; set; }
+    public double bid { get; set; }
   }
 }
