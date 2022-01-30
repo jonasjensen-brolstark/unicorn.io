@@ -5,12 +5,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ApmErrorHandler, ApmModule, ApmService } from '@elastic/apm-rum-angular';
 
 import { AppComponent } from './app.component';
+import { UnicornComponent } from './components/unicorn/unicorn.component';
+import { BidComponent } from './components/bid/bid.component';
 
 const routes: Routes = []
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    UnicornComponent,
+    BidComponent
   ],
   imports: [
     ApmModule,
@@ -29,10 +33,10 @@ const routes: Routes = []
 })
 export class AppModule {
   constructor(service: ApmService) {
-    service.init({
-      serviceName: 'site',
-      serverUrl: 'http://localhost:8200',
-      environment: 'production',
-    });
+    // service.init({
+    //   serviceName: 'site',
+    //   serverUrl: 'http://localhost:8200',
+    //   environment: 'production',
+    // });
   }
 }

@@ -1,17 +1,7 @@
 <header>
   <h1>Unicorn.io</h1>
 </header>
-<div *ngFor="let unicorn of unicorns$ | async; trackBy:trackById" class="unicorn">
-  <div class="name">{{ unicorn.name }}</div>
-  <div class="price">{{ unicorn.price | number }}</div>
-</div>
 
-<div *ngFor="let bid of bids$ | async;" class="unicorn">
-  <div class="name">{{ bid.id }}</div>
-  <div class="price">{{ bid.amount | number }}</div>
-</div>
+<app-unicorn *ngFor="let unicorn of unicorns$ | async; trackBy:trackById" [unicorn]="unicorn" (bid)="onBid($event.amount, $event.unicornId)">
+</app-unicorn>
 
-<div>
-  <input #bidInput type="number" title="bid"/>
-  <button (click)="bid(bidInput.value)">Bid</button>
-</div>

@@ -1,0 +1,11 @@
+:host {
+  font-size: calc(10px + 2vmin);
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .name, .price, .bid {
+    margin-right: 10px;
+  }
+}

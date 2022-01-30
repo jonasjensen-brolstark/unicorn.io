@@ -4,4 +4,5 @@ export interface Unicorn {
   weight: string;
   age: number;
   price: number;
+  bid: number;
 }

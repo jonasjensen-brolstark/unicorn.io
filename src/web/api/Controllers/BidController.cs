@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +25,12 @@ public class BidsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Bid> Post(double amount)
+    public async Task<Bid> Post(double amount, Guid unicornId)
     {
         var bidClient = new RestClient("http://bid");
         var BidsRequest = new RestRequest($"bid", DataFormat.Json);
         BidsRequest.AddQueryParameter("amount", amount.ToString());
+        BidsRequest.AddQueryParameter("unicornId", unicornId.ToString());
         return await bidClient.PostAsync<Bid>(BidsRequest);
     }
 }

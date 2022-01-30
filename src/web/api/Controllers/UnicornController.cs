@@ -30,15 +30,27 @@ namespace api.Controllers
             var pricingRequest = new RestRequest("price", DataFormat.Json);
             var pricings = pricingClient.Get<List<Pricing>>(pricingRequest).Data;
 
+            var bidClient = new RestClient("http://bid");
+            var bidsRequest = new RestRequest("bid", DataFormat.Json);
+            var bids = bidClient.Get<List<Bid>>(bidsRequest).Data;
+
+            if(!bids.Any())
+            {
+                bids = new List<Bid>();
+            }
+
             var unicorns = new List<Unicorn>();
-            foreach(var profile in profiles) {
-              unicorns.Add(new Unicorn{
-                Age = profile.Age,
-                Name = profile.Name,
-                Weight = profile.Weight,
-                Price = pricings.FirstOrDefault(p => p.UnicornId == profile.Id).Price,
-                Id = profile.Id
-              });
+            foreach (var profile in profiles)
+            {
+                unicorns.Add(new Unicorn
+                {
+                    Age = profile.Age,
+                    Name = profile.Name,
+                    Weight = profile.Weight,
+                    Price = pricings.FirstOrDefault(p => p.UnicornId == profile.Id).Price,
+                    Id = profile.Id,
+                    bid = bids.Any((bid) => bid.UnicornId == profile.Id) ? bids?.Where((bid) => bid.UnicornId == profile.Id)?.Max((bid) => bid.Amount) ?? 0 : 0
+                });
             }
 
             return unicorns;
