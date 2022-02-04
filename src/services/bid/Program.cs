@@ -29,8 +29,6 @@ builder.Services.AddMediatR(typeof(Program));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IBidService, BidService>();
-builder.Services.AddScoped<IBidRepository, BidRepository>();
 builder.Services.AddDbContext<BidContext>(options => options.UseSqlServer(builder.Configuration["BID_CONNECTION_STRING"] ?? "DEFAULT_CONNECTION_STRING"));
 
 var app = builder.Build();

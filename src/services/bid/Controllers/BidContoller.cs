@@ -1,3 +1,6 @@
+using bid.Features.CreateBid;
+using bid.Features.GetBids;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace bid.Controllers;
@@ -8,23 +11,24 @@ public class BidController : ControllerBase
 {
 
     private readonly ILogger<BidController> _logger;
-    private readonly IBidService _bidService;
 
-    public BidController(ILogger<BidController> logger, IBidService bidService)
+    private readonly IMediator _mediator;
+
+    public BidController(ILogger<BidController> logger, IMediator mediator)
     {
         _logger = logger;
-        _bidService = bidService;
+        _mediator = mediator;
     }
 
     [HttpGet(Name = "GetBids")]
     public async Task<IEnumerable<BidDto>> GetBidsAsync()
     {
-        return await _bidService.GetBidsAsync();
+        return await _mediator.Send(new GetBidsQuery());
     }
 
     [HttpPost(Name = "CreateBid")]
     public async Task<BidDto> CreateBidAsync(double amount, Guid unicornId, Guid userId)
     {
-        return await _bidService.CreateBidAsync(amount, unicornId, userId);
+        return await _mediator.Send(new CreateBidCommand(amount, unicornId, userId));
     }
 }
