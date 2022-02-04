@@ -4,6 +4,7 @@ using Elastic.CommonSchema.Serilog;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,7 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .ReadFrom.Configuration(context.Configuration)
     .ReadFrom.Services(services)
     .Enrich.FromLogContext()
-    .Enrich.WithProperty("Application", "image")
+    .Enrich.WithProperty("Application", "bid")
     .Enrich.WithElasticApmCorrelationInfo()
     .WriteTo.Console()
     .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(
@@ -23,6 +24,7 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     );
 
 builder.Services.AddControllers();
+builder.Services.AddMediatR(typeof(Program));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
