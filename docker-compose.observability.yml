@@ -40,7 +40,6 @@ services:
       - 8200:8200
     networks:
       - services
-      - elastic
     command: >
       apm-server -e
         -E apm-server.rum.enabled=true
@@ -71,7 +70,6 @@ services:
       - 9200:9200
     networks:
       - services
-      - elastic
     healthcheck:
       interval: 20s
       retries: 10
@@ -90,7 +88,6 @@ services:
       - 5601:5601
     networks:
       - services
-      - elastic
     healthcheck:
       interval: 10s
       retries: 20
@@ -98,5 +95,3 @@ services:
 
 networks:
   services:
-  elastic:
-    driver: bridge
