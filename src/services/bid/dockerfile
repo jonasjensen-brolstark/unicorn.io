@@ -1,11 +1,14 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
-WORKDIR /app
-COPY *.csproj ./
-RUN dotnet restore
-COPY . ./
+WORKDIR /src
+COPY libaries/EventService/EventService.csproj libaries/EventService/EventService.csproj
+COPY services/bid/bid.csproj ./services/bid/bid.csproj
+RUN dotnet restore /src/services/bid
+COPY libaries/EventService libaries/EventService
+COPY services/bid services/bid
+WORKDIR /src/services/bid
 RUN dotnet publish -c Release -o output
 # Runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
-COPY --from=build-env /app/output .
+COPY --from=build-env /src/services/bid/output .
 ENTRYPOINT ["dotnet", "bid.dll"]

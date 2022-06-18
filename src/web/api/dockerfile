@@ -1,11 +1,14 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
-WORKDIR /app
-COPY *.csproj ./
-RUN dotnet restore
-COPY . ./
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /src
+COPY libaries/EventService/EventService.csproj libaries/EventService/EventService.csproj
+COPY web/api/api.csproj ./web/api/api.csproj
+RUN dotnet restore /src/web/api
+COPY libaries/EventService libaries/EventService
+COPY web/api web/api
+WORKDIR /src/web/api
 RUN dotnet publish -c Release -o output
 # Runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
-COPY --from=build-env /app/output .
+COPY --from=build-env /src/web/api/output .
 ENTRYPOINT ["dotnet", "api.dll"]

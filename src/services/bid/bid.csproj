@@ -25,4 +25,8 @@
     <PackageReference Include="serilog.sinks.elasticsearch" Version="8.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\libaries\EventService\EventService.csproj" />
+  </ItemGroup>
+
 </Project>

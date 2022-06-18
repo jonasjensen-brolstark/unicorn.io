@@ -1,21 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Elastic.Apm.NetCoreAll;
-
+using EventService;
+using EventService.Nats;
 
 namespace api
 {
-  public class Startup
+    public class Startup
   {
     public Startup(IConfiguration configuration)
     {
@@ -27,6 +22,18 @@ namespace api
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+
+      services.AddSingleton<IEventService, NatsEventService>(sp =>
+      {
+          var serviceScopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+          var logger = sp.GetRequiredService<ILogger<NatsEventService>>();
+          var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+          return new NatsEventService(logger, serviceScopeFactory, eventBusSubcriptionsManager);
+      });
+
+      services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+
       services.AddCors(o => o.AddPolicy("TotalPublic", builder =>
       {
         builder.AllowAnyOrigin()
