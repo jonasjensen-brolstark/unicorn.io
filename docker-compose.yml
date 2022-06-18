@@ -1,9 +1,20 @@
 version: "3.7"
 services:
 
+  nats:
+    image: nats
+    ports:
+      - "8222:8222"
+      - "4222:4222"
+      - "6222:6222"
+    command: "--http_port 8222 --jetstream  --name auto"
+    networks: 
+      - nats
+
   bid:
     build:
-      context: ./src/services/bid/
+      context: ./src
+      dockerfile: services/bid/dockerfile
     depends_on:
       bid_db:
         condition: service_healthy
@@ -13,6 +24,7 @@ services:
     networks:
       - services
       - bid
+      - nats
 
   bid_db:
     image: mcr.microsoft.com/mssql/server
@@ -72,7 +84,8 @@ services:
 
   web_api:
     build:
-      context: ./src/web/api/
+      context: ./src
+      dockerfile: web/api/dockerfile
     ports:
       - "5000:80"
     environment:
@@ -80,6 +93,7 @@ services:
     networks:
       - backend
       - services
+      - nats
 
   site:
     build:
@@ -92,3 +106,5 @@ networks:
   services:
   pricing:
   bid:
+  nats:
+    name: nats
